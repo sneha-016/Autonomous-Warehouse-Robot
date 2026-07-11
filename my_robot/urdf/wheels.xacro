@@ -1,0 +1,135 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ================= LEFT WHEEL ================= -->
+
+  <link name="left_wheel">
+
+    <visual>
+      <origin rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.06"/>
+      </geometry>
+      <material name="dark_gray"/>
+    </visual>
+
+    <collision>
+      <origin rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.06"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="1"/>
+      <inertia
+        ixx="0.01"
+        ixy="0"
+        ixz="0"
+        iyy="0.01"
+        iyz="0"
+        izz="0.01"/>
+    </inertial>
+
+  </link>
+
+
+  <!-- ================= RIGHT WHEEL ================= -->
+
+  <link name="right_wheel">
+
+    <visual>
+      <origin rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.06"/>
+      </geometry>
+      <material name="dark_gray"/>
+    </visual>
+
+    <collision>
+      <origin rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.06"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="1"/>
+      <inertia
+        ixx="0.01"
+        ixy="0"
+        ixz="0"
+        iyy="0.01"
+        iyz="0"
+        izz="0.01"/>
+    </inertial>
+
+  </link>
+
+
+  <!-- ================= WHEEL JOINTS ================= -->
+
+  <joint name="left_wheel_joint" type="continuous">
+
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+
+    <origin xyz="0 0.27 0.11"/>
+
+    <axis xyz="0 1 0"/>
+
+  </joint>
+
+
+  <joint name="right_wheel_joint" type="continuous">
+
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+
+    <origin xyz="0 -0.27 0.11"/>
+
+    <axis xyz="0 1 0"/>
+
+  </joint>
+
+
+  <!-- ================= REAR CASTER ================= -->
+
+  <link name="caster_wheel">
+
+    <visual>
+
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+
+      <origin xyz="-0.25 0 0.05"/>
+
+      <material name="dark_gray"/>
+
+    </visual>
+
+
+    <collision>
+
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+
+      <origin xyz="-0.25 0 0.05"/>
+
+    </collision>
+
+  </link>
+
+
+  <joint name="caster_joint" type="fixed">
+
+    <parent link="base_link"/>
+    <child link="caster_wheel"/>
+
+    <origin xyz="0 0 0"/>
+
+  </joint>
+
+</robot>
+
