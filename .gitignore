@@ -1,0 +1,16 @@
+build/
+install/
+log/
+
+__pycache__/
+*.pyc
+
+.vscode/
+.idea/
+
+*.swp
+*.tmp
+
+*.bag
+*.db3
+aws-robomaker-small-warehouse-world/.git/
