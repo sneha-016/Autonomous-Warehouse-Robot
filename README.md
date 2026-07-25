@@ -33,34 +33,16 @@ The robot creates an occupancy map using **SLAM Toolbox**, estimates its positio
 The following pipeline illustrates how the robot perceives its environment, localizes itself, plans a path, and autonomously reaches a navigation goal.
 
 ```mermaid
-flowchart LR
-
-A[Launch Gazebo Simulation]
---> B[Spawn Warehouse Robot]
-
-B
---> C[LiDAR & IMU]
-
-C
---> D[SLAM Toolbox]
-
-D
---> E[Build Occupancy Map]
-
-E
---> F[AMCL Localization]
-
-F
---> G[Navigation2]
-
-G
---> H[Goal Navigation]
-
-H
---> I[Obstacle Avoidance]
-
-I
---> J[Goal Reached]
+flowchart TD
+    A[Launch Gazebo Simulation] --> B[Spawn Warehouse Robot]
+    B --> C[LiDAR and IMU]
+    C --> D[SLAM Toolbox]
+    D --> E[Build Occupancy Map]
+    E --> F[AMCL Localization]
+    F --> G[Navigation2]
+    G --> H[Goal Navigation]
+    H --> I[Obstacle Avoidance]
+    I --> J[Goal Reached]
 ```
 
 ## 🏗 System Architecture
@@ -69,31 +51,22 @@ The system is built on a modular ROS 2 architecture, where each component is res
 
 ```mermaid
 flowchart TD
+    A[Gazebo Simulation] --> B[Warehouse Robot]
 
-A[Gazebo Simulation]
---> B[Warehouse Robot]
+    B --> C[LiDAR]
+    B --> D[IMU]
+    B --> E[Differential Drive]
 
-B --> C[LiDAR]
-B --> D[IMU]
-B --> E[Differential Drive]
+    C --> F[SLAM Toolbox]
+    E --> F
 
-C --> F[SLAM Toolbox]
-
-E --> F
-
-F --> G[Occupancy Map]
-
-G --> H[AMCL]
-
-H --> I[Navigation2]
-
-I --> J[Path Planning]
-
-J --> K[/cmd_vel]
-
-K --> E
-
-E --> L[Robot Motion]
+    F --> G[Occupancy Map]
+    G --> H[AMCL Localization]
+    H --> I[Navigation2]
+    I --> J[Path Planning]
+    J --> K["/cmd_vel"]
+    K --> E
+    E --> L[Robot Motion]
 ```
 
 ## ⚙ Prerequisites
