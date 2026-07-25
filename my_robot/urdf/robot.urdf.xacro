@@ -4,6 +4,8 @@
   <xacro:include filename="$(find my_robot)/urdf/materials.xacro"/>
   <xacro:include filename="$(find my_robot)/urdf/chassis.xacro"/>
   <xacro:include filename="$(find my_robot)/urdf/wheels.xacro"/>
+  <xacro:include filename="$(find my_robot)/urdf/gazebo.xacro"/>
+
   <!-- ================= MATERIALS ================= -->
 
  

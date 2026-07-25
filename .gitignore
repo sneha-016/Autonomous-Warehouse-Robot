@@ -14,3 +14,7 @@ __pycache__/
 *.bag
 *.db3
 aws-robomaker-small-warehouse-world/.git/
+
+# Local backup robot descriptions
+*_before_*.urdf
+*_backup.urdf

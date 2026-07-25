@@ -31,7 +31,7 @@ def generate_launch_description():
                 os.path.join(
                     gazebo_ros,
                     'launch',
-                    'gazebo.launch.py'
+                    'gzserver.launch.py'
                 )
             ),
             launch_arguments={

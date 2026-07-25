@@ -16,6 +16,18 @@
     <color rgba="0.7 0.7 0.7 1"/>
   </material>
 
+  <material name="sensor_black">
+    <color rgba="0.03 0.03 0.03 1"/>
+  </material>
+  <!-- ================= BASE FOOTPRINT ================= -->
+
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0"/>
+  </joint>
 
   <!-- ================= MAIN BODY ================= -->
 
@@ -38,25 +50,24 @@
 
     <inertial>
       <origin xyz="0 0 0.18"/>
-      <mass value="6"/>
+      <mass value="6.0"/>
       <inertia
-        ixx="0.2"
+        ixx="0.20"
         ixy="0"
         ixz="0"
-        iyy="0.2"
+        iyy="0.20"
         iyz="0"
-        izz="0.2"/>
+        izz="0.20"/>
     </inertial>
 
   </link>
 
 
-  <!-- ================= TOP SENSOR PLATFORM ================= -->
+  <!-- ================= TOP PLATFORM ================= -->
 
   <link name="top_plate">
 
     <visual>
-      <origin xyz="0 0 0.34"/>
       <geometry>
         <box size="0.35 0.30 0.04"/>
       </geometry>
@@ -64,24 +75,29 @@
     </visual>
 
     <collision>
-      <origin xyz="0 0 0.34"/>
       <geometry>
         <box size="0.35 0.30 0.04"/>
       </geometry>
     </collision>
 
+    <inertial>
+      <mass value="0.4"/>
+      <inertia
+        ixx="0.003"
+        ixy="0"
+        ixz="0"
+        iyy="0.004"
+        iyz="0"
+        izz="0.006"/>
+    </inertial>
+
   </link>
 
-
   <joint name="top_plate_joint" type="fixed">
-
     <parent link="base_link"/>
     <child link="top_plate"/>
-
-    <origin xyz="0 0 0"/>
-
+    <origin xyz="0 0 0.34"/>
   </joint>
-
 
 
   <!-- ================= LEFT WHEEL ================= -->
@@ -103,9 +119,8 @@
       </geometry>
     </collision>
 
-
     <inertial>
-      <mass value="1"/>
+      <mass value="1.0"/>
       <inertia
         ixx="0.01"
         ixy="0"
@@ -116,7 +131,6 @@
     </inertial>
 
   </link>
-
 
 
   <!-- ================= RIGHT WHEEL ================= -->
@@ -138,9 +152,8 @@
       </geometry>
     </collision>
 
-
     <inertial>
-      <mass value="1"/>
+      <mass value="1.0"/>
       <inertia
         ixx="0.01"
         ixy="0"
@@ -153,33 +166,21 @@
   </link>
 
 
-
   <!-- ================= WHEEL JOINTS ================= -->
 
   <joint name="left_wheel_joint" type="continuous">
-
     <parent link="base_link"/>
     <child link="left_wheel"/>
-
     <origin xyz="0 0.27 0.11"/>
-
     <axis xyz="0 1 0"/>
-
   </joint>
-
-
 
   <joint name="right_wheel_joint" type="continuous">
-
     <parent link="base_link"/>
     <child link="right_wheel"/>
-
     <origin xyz="0 -0.27 0.11"/>
-
     <axis xyz="0 1 0"/>
-
   </joint>
-
 
 
   <!-- ================= REAR CASTER ================= -->
@@ -187,42 +188,219 @@
   <link name="caster_wheel">
 
     <visual>
-
       <geometry>
         <sphere radius="0.05"/>
       </geometry>
-
-      <origin xyz="-0.25 0 0.05"/>
-
       <material name="dark_gray"/>
-
     </visual>
 
-
     <collision>
-
       <geometry>
         <sphere radius="0.05"/>
       </geometry>
-
-      <origin xyz="-0.25 0 0.05"/>
-
     </collision>
 
+    <inertial>
+      <mass value="0.2"/>
+      <inertia
+        ixx="0.0002"
+        ixy="0"
+        ixz="0"
+        iyy="0.0002"
+        iyz="0"
+        izz="0.0002"/>
+    </inertial>
 
   </link>
 
-
-
   <joint name="caster_joint" type="fixed">
-
     <parent link="base_link"/>
     <child link="caster_wheel"/>
-
-    <origin xyz="0 0 0"/>
-
+    <origin xyz="-0.25 0 0.05"/>
   </joint>
 
 
-</robot>
+  <!-- ================= 2D LIDAR ================= -->
 
+  <link name="lidar_link">
+
+    <visual>
+      <geometry>
+        <cylinder radius="0.07" length="0.06"/>
+      </geometry>
+      <material name="sensor_black"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <cylinder radius="0.07" length="0.06"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.25"/>
+      <inertia
+        ixx="0.0002"
+        ixy="0"
+        ixz="0"
+        iyy="0.0002"
+        iyz="0"
+        izz="0.0003"/>
+    </inertial>
+
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="top_plate"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 0 0.07"/>
+  </joint>
+
+
+  <!-- ================= GAZEBO LIDAR SENSOR ================= -->
+
+  <gazebo reference="lidar_link">
+
+    <sensor name="warehouse_lidar" type="ray">
+
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>10.0</update_rate>
+
+      <pose>0 0 0 0 0 0</pose>
+
+      <ray>
+
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+        </scan>
+
+        <range>
+          <min>0.12</min>
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+
+      </ray>
+
+      <plugin
+        name="warehouse_lidar_plugin"
+        filename="libgazebo_ros_ray_sensor.so">
+
+        <ros>
+          <namespace>/</namespace>
+          <remapping>~/out:=scan</remapping>
+        </ros>
+
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>lidar_link</frame_name>
+
+      </plugin>
+
+    </sensor>
+
+  </gazebo>
+  <!-- ================= DIFFERENTIAL DRIVE ================= -->
+
+  <gazebo>
+    <plugin name="warehouse_diff_drive" filename="libgazebo_ros_diff_drive.so">
+
+      <ros>
+        <namespace>/</namespace>
+      </ros>
+
+      <update_rate>50</update_rate>
+
+      <left_joint>left_wheel_joint</left_joint>
+      <right_joint>right_wheel_joint</right_joint>
+
+      <wheel_separation>0.54</wheel_separation>
+      <wheel_diameter>0.22</wheel_diameter>
+
+      <max_wheel_torque>20</max_wheel_torque>
+      <max_wheel_acceleration>1.0</max_wheel_acceleration>
+
+      <command_topic>cmd_vel</command_topic>
+      <odometry_topic>odom</odometry_topic>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+      <publish_wheel_tf>false</publish_wheel_tf>
+
+    </plugin>
+  </gazebo>
+  <!-- ================= IMU SENSOR ================= -->
+
+  <link name="imu_link">
+
+    <visual>
+      <geometry>
+        <box size="0.06 0.04 0.02"/>
+      </geometry>
+      <material name="sensor_black"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="0.06 0.04 0.02"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.05"/>
+      <inertia
+        ixx="0.00001"
+        ixy="0"
+        ixz="0"
+        iyy="0.00001"
+        iyz="0"
+        izz="0.00001"/>
+    </inertial>
+
+  </link>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.22"/>
+  </joint>
+
+  <gazebo reference="imu_link">
+
+    <sensor name="warehouse_imu" type="imu">
+
+      <always_on>true</always_on>
+      <update_rate>50.0</update_rate>
+      <visualize>false</visualize>
+
+      <plugin
+        name="warehouse_imu_plugin"
+        filename="libgazebo_ros_imu_sensor.so">
+
+        <ros>
+          <namespace>/</namespace>
+          <remapping>~/out:=imu</remapping>
+        </ros>
+
+        <initial_orientation_as_reference>false</initial_orientation_as_reference>
+        <frame_name>imu_link</frame_name>
+
+      </plugin>
+
+    </sensor>
+
+  </gazebo>
+</robot>

@@ -1,0 +1,4 @@
+[submodule "aws-robomaker-small-warehouse-world"]
+	path = aws-robomaker-small-warehouse-world
+	url = https://github.com/sneha-016/warehouse-world-assets.git
+	branch = ros2
